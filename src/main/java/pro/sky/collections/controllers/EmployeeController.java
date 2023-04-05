@@ -1,0 +1,7 @@
+package pro.sky.collections.controllers;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class EmployeeController {
+}
