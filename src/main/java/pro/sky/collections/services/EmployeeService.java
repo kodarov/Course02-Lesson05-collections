@@ -6,9 +6,7 @@ import pro.sky.collections.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.collections.exceptions.EmployeeNotFoundException;
 import pro.sky.collections.exceptions.EmployeeStorageIsFullException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeService {
@@ -55,6 +53,6 @@ public class EmployeeService {
     }
 
     public List<Employee> print() {
-        return employeeList;
+        return new ArrayList<>(employeeList);
     }
 }
