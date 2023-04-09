@@ -1,12 +1,18 @@
 package pro.sky.collections.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.collections.Employee;
+import pro.sky.collections.exceptions.EmployeeAlreadyAddedException;
+import pro.sky.collections.exceptions.EmployeeNotFoundException;
+import pro.sky.collections.exceptions.EmployeeStorageIsFullException;
 import pro.sky.collections.services.EmployeeService;
 
+import java.util.List;
+
 @RestController
+@RequestMapping(path = "/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -14,30 +20,47 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping(path = "/employee/add")
-    public String addEmployee(@RequestParam("lastName") String lastName,
-                              @RequestParam("firstName") String firstName
+    @GetMapping(path = "/add")
+    public Employee addEmployee(@RequestParam("lastName") String lastName,
+                                @RequestParam("firstName") String firstName
     ) {
         Employee employee = new Employee(lastName, firstName);
-        employeeService.addEmployee(employee);
-        return "Employee added successfully";
+        return employeeService.addEmployee(employee);
     }
 
-    @GetMapping(path = "/employee/delete")
-    public String deleteEmployee(@RequestParam("lastName") String lastName,
-                                 @RequestParam("firstName") String firstName
+    @GetMapping(path = "/delete")
+    public Employee deleteEmployee(@RequestParam("lastName") String lastName,
+                                   @RequestParam("firstName") String firstName
     ) {
         Employee employee = new Employee(lastName, firstName);
-        employeeService.deleteEmployee(employee);
-        return "Employee removed successfully";
+        return employeeService.deleteEmployee(employee);
     }
 
-    @GetMapping(path = "/employee/search")
-    public String searchEmployee(@RequestParam("lastName") String lastName,
-                                 @RequestParam("firstName") String firstName
+    @GetMapping(path = "/search")
+    public Employee searchEmployee(@RequestParam("lastName") String lastName,
+                                   @RequestParam("firstName") String firstName
     ) {
         Employee employee = new Employee(lastName, firstName);
-        employeeService.searchEmployee(employee);
-        return "Employee found";
+        return employeeService.searchEmployee(employee);
+    }
+
+    @GetMapping(path = "/print")
+    public List<Employee> printEmployees() {
+        return employeeService.print();
+    }
+
+    @ExceptionHandler(EmployeeStorageIsFullException.class)
+    public ResponseEntity<String> handException(EmployeeStorageIsFullException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ArrayIsFull");
+    }
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<String> handException(EmployeeNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("EmployeeNotFound");
+    }
+
+    @ExceptionHandler(EmployeeAlreadyAddedException.class)
+    public ResponseEntity<String> handException(EmployeeAlreadyAddedException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("EmployeeAlreadyAdded");
     }
 }

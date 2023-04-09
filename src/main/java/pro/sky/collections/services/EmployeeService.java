@@ -2,27 +2,59 @@ package pro.sky.collections.services;
 
 import org.springframework.stereotype.Service;
 import pro.sky.collections.Employee;
+import pro.sky.collections.exceptions.EmployeeAlreadyAddedException;
+import pro.sky.collections.exceptions.EmployeeNotFoundException;
+import pro.sky.collections.exceptions.EmployeeStorageIsFullException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    private List<Employee> employeeList = new ArrayList<>();
+    private static int SIZE = 4; //искуственно ограничиваем List
+    private final List<Employee> employeeList = new ArrayList<>(SIZE);
 
-    public void addEmployee(Employee employee) {
+    public Employee addEmployee(Employee employee) {
+        if (employeeList.size() < SIZE) {
+            for (int i = 0; i < employeeList.size(); i++) {
+                if (employeeList.get(i).equals(employee)) {
+                    throw new EmployeeAlreadyAddedException("Employee exists!");
+                }
+            }
+        } else throw new EmployeeStorageIsFullException("Book overflow!");
         employeeList.add(employee);
+        return employee;
     }
 
-    public void deleteEmployee(Employee employee) {
-            employeeList.remove(employee);
-    }
-    public String searchEmployee(Employee employee) {
-        if (employeeList.contains(employee)){
-            return "Найден "+ employee.toString();
+    public Employee deleteEmployee(Employee employee) {
+/*        for (int i = 0; i < employeeList.size(); i++) {
+            if (employeeList.get(i).equals(employee)){
+                employeeList.remove(i);
+                return "Employee removed successfully";
+            }
+        }*/
+        Iterator<Employee> employeeIterator = employeeList.iterator();
+        while (employeeIterator.hasNext()) {
+            Employee nextEmployee = employeeIterator.next();
+            if (nextEmployee.equals(employee)) {
+                employeeIterator.remove();
+                return employee;
+            }
         }
-        return "Работник не найден";
+        throw new EmployeeNotFoundException("Employee not found");
     }
 
+    public Employee searchEmployee(Employee employee) {
+        for (int i = 0; i < employeeList.size(); i++) {
+            if (employeeList.get(i).equals(employee)) {
+                return employee;
+            }
+        }
+        throw new EmployeeNotFoundException("Employee not found");
+    }
 
+    public List<Employee> print() {
+        return employeeList;
+    }
 }

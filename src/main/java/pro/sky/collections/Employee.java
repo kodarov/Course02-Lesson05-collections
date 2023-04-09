@@ -25,10 +25,6 @@ public class Employee {
         return lastName;
     }
 
-    public String getFI() {
-        return lastName+" "+firstName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
