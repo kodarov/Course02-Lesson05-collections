@@ -26,28 +26,28 @@ public class EmployeeService {
     }
 
     public Employee deleteEmployee(Employee employee) {
-/*        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).equals(employee)){
-                employeeList.remove(i);
-                return "Employee removed successfully";
-            }
-        }*/
-        Iterator<Employee> employeeIterator = employeeList.iterator();
+/*        Iterator<Employee> employeeIterator = employeeList.iterator();
         while (employeeIterator.hasNext()) {
             Employee nextEmployee = employeeIterator.next();
             if (nextEmployee.equals(employee)) {
                 employeeIterator.remove();
                 return employee;
             }
+        }*/
+        if (employeeList.remove(employee)){
+            return employee;
         }
         throw new EmployeeNotFoundException("Employee not found");
     }
 
     public Employee searchEmployee(Employee employee) {
-        for (int i = 0; i < employeeList.size(); i++) {
+/*        for (int i = 0; i < employeeList.size(); i++) {
             if (employeeList.get(i).equals(employee)) {
                 return employee;
             }
+        }*/
+        if (employeeList.contains(employee)){
+            return employee;
         }
         throw new EmployeeNotFoundException("Employee not found");
     }
