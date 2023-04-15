@@ -11,6 +11,7 @@ import pro.sky.collections.services.EmployeeService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/employee")
@@ -36,7 +37,6 @@ public class EmployeeController {
         Employee employee = new Employee(lastName, firstName);
         return employeeService.deleteEmployee(employee);
     }
-
     @GetMapping(path = "/search")
     public Employee searchEmployee(@RequestParam("lastName") String lastName,
                                    @RequestParam("firstName") String firstName
@@ -46,7 +46,7 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/print")
-    public List<Employee> printEmployees() {
+    public Map<String, Employee> printEmployees() {
         return employeeService.print();
     }
 

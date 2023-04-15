@@ -1,0 +1,16 @@
+GET http://localhost:8080/employee/add?firstName=Salavat&lastName=Kodarov
+###
+GET http://localhost:8080/employee/add?firstName=Salavat&lastName=Kodarov1
+###
+GET http://localhost:8080/employee/add?firstName=Salavat&lastName=Kodarov2
+###
+GET http://localhost:8080/employee/add?firstName=Salavat&lastName=Kodarov3
+###
+GET http://localhost:8080/employee/add?firstName=Salavat&lastName=Kodarov4
+###
+GET http://localhost:8080/employee/delete?firstName=Salavat&lastName=Kodarov
+###
+GET http://localhost:8080/employee/search?firstName=Salavat&lastName=Kodarov
+###
+GET http://localhost:8080/employee/print
+
